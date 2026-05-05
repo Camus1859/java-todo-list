@@ -1,0 +1,22 @@
+# Build output
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+
+# Java
+*.class
+*.jar
+*.war
+
+# Environment
+.env
+
+# Claude files
+.claude/
