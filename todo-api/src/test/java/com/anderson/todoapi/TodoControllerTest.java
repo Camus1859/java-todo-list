@@ -18,4 +18,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TodoControllerTest {
 
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private TodoService todoService;
+
+    @Test
+    void getAll_returnsEmptyList() throws Exception {
+        when(todoService.getAll()).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/todos"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[]"));
+    }
+
+    @Test
+    void add_returnsCreatedTodo() throws Exception {
+        Todo created = new Todo(1L, "buy milk", false);
+        when(todoService.add(anyString())).thenReturn(created);
+
+        mockMvc.perform(post("/api/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"text\":\"buy milk\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.text").value("buy milk"))
+                .andExpect(jsonPath("$.id").value(1));
+    }
 }
